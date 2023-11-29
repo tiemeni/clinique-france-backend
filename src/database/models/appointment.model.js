@@ -7,11 +7,6 @@ const appointmentModel = mongoose.Schema({
         ref: USER,
         require
     },
-    lieu: { type: mongoose.Types.ObjectId, ref: LIEU , require },
-    center: {
-        type: mongoose.Types.ObjectId,
-        ref: CENTRE,
-    },
     patient: {
         type: mongoose.Types.ObjectId,
         ref: PATIENT,

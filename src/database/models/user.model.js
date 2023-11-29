@@ -58,10 +58,6 @@ const utilisateurModel = mongoose.Schema({
     motifFilter: {
         type: String
     },
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE,
-    },
     isPraticien: {
         type: Boolean,
         default: false

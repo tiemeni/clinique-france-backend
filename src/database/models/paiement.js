@@ -10,9 +10,5 @@ const paiementModel = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: USER
     },
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE
-    }
 });
 module.exports = mongoose.model(PAIEMENT, paiementModel);

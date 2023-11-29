@@ -25,16 +25,6 @@ const practicienModel = mongoose.Schema({
             ref: SPECIALITY
         }
     ],
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE,
-        required: true
-    },
-    idLieu: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: LIEU,
-        required: true
-    }
 });
 
 module.exports = mongoose.model(PRATICIEN, practicienModel);

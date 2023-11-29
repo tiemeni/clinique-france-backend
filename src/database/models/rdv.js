@@ -10,10 +10,6 @@ const rdvModel = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: USER
     },
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE
-    },
     idPracticien: {
         type: mongoose.Schema.Types.ObjectId,
         ref: PRATICIEN

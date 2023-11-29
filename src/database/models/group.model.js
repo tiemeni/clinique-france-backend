@@ -14,11 +14,6 @@ const groupModel = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: RIGHT,
     }],
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE,
-        required: true
-    }
 })
 
 module.exports = mongoose.model(GROUP, groupModel);

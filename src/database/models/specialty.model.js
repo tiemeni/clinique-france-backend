@@ -19,11 +19,6 @@ const specialtyModel = mongoose.Schema({
     secretaryAlert: {
         type: String
     },
-    idCentre: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: CENTRE,
-        required: true
-    },
     idProfession: {
         type: mongoose.Schema.Types.ObjectId,
         ref: PROFESSION,
