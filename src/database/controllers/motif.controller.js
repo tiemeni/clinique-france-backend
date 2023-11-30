@@ -34,9 +34,7 @@ const deleteMotifById = async (req, res) => {
 
 const getAllMotifs = async (req, res) => {
   try {
-    const foundMotifs = await motifService.findMotifs({
-      idCentre: req.query.idCentre,
-    });
+    const foundMotifs = await motifService.findMotifs();
     return handler.successHandler(res, foundMotifs);
   } catch (err) {
     return handler.errorHandler(res, err, httpStatus.INTERNAL_SERVER_ERROR);
@@ -60,7 +58,6 @@ const getMotifByIdProfession = async (req, res) => {
   try {
     const foundMotif = await motifService.findMotifsByQuery({
       idProfession: req.params.idProfession,
-      idCentre: req.query.idCentre,
     });
     if (foundMotif == null)
       return handler.errorHandler(res, "No motif found", httpStatus.NOT_FOUND);
@@ -74,7 +71,6 @@ const getMotifByIdSpeciality = async (req, res) => {
   try {
     const foundMotif = await motifService.findMotifsByQuery({
       idSpeciality: req.params.idSpeciality,
-      idCentre: req.query.idCentre,
     });
     if (foundMotif == null)
       return handler.errorHandler(res, "No motif found", httpStatus.NOT_FOUND);
@@ -88,7 +84,6 @@ const getLieuxByIdMotif = async (req, res) => {
   try {
     const foundMotif = await motifService.findMotifsByQuery({
       _id: req.params.idMotif,
-      idCentre: req.query.idCentre,
     });
     if (foundMotif == null)
       return handler.errorHandler(res, "No Lieu found", httpStatus.NOT_FOUND);
@@ -114,10 +109,7 @@ const searhMotifByKey = async (req, res) => {
   const formatQuery = (obj) => {
     let res = {};
     Object.keys(obj).forEach((key) => {
-      res[key] =
-        key?.toString() == "idCentre"
-          ? obj[key]
-          : { $regex: obj[key], $options: "i" };
+      res[key] = { $regex: obj[key], $options: "i" };
     });
     return res;
   };
