@@ -82,19 +82,16 @@ const makeAppointment = async (req, res) => {
     const isExist = await appointementService.findOneByQuery({
       startTime: data.startTime,
       practitioner: data.practitioner,
-      center: data.center,
-      lieu: data.lieu,
     });
     if (isExist)
       return handler.errorHandler(
         res,
-        "Ce rendez-vous a déjà été pris",
+        "Ce creneau a deje ete occupé",
         httpStatus.NOT_ACCEPTABLE
       );
     const result = await appointementService.createAppointment({
       ...data,
       dayOfWeek: new Date(data.date).getDay(),
-      center: req.idCentre,
       created_at: formatTz(new Date(), "yyyy-MM-dd'T'HH:mm", timeZone),
     });
     const rdv = await appointementService.findByQuery({ _id: result._id });
@@ -106,7 +103,7 @@ const makeAppointment = async (req, res) => {
         new Date(result.date_long),
         "EEEE dd MMMM yyyy à HH:mm",
         { locale: fr }
-      )} au lieu dit ${rdv[0].lieu.label}`,
+      )} au lieu dit Clinique de France}`,
       receiver: data.patient,
       appointment: result?._id,
       type: notificationType.APPOINTMENT_CREATED,
@@ -128,15 +125,11 @@ const makeAppointment = async (req, res) => {
 const upadteAppointment = async (req, res) => {
   const data = req.body;
   const io = req.io;
-  data.borderColor = data.status && data.status == 'Annulé' ? "red" : "";
+  data.borderColor = data.status && data.status == "Annulé" ? "red" : "";
   try {
-    const result = await appointementService.editeOneByQuery(
-      req.params.idRdv,
-      req.query.idCentre,
-      {
-        ...data,
-      }
-    );
+    const result = await appointementService.editeOneByQuery(req.params.idRdv, {
+      ...data,
+    });
 
     const rdv = await appointementService.findByQuery({ _id: result._id });
     const notification = await notificationService.create({
@@ -145,7 +138,7 @@ const upadteAppointment = async (req, res) => {
         new Date(result.date_long),
         "EEEE dd MMMM yyyy à HH:mm",
         { locale: fr }
-      )} au lieu dit ${rdv[0].lieu?.label}`,
+      )} au lieu dit Clinique de France}`,
       receiver: result?.patient?._id,
       appointment: result?._id,
       type: notificationType.APPOINTMENT_CREATED,
@@ -154,7 +147,7 @@ const upadteAppointment = async (req, res) => {
     // Get user informations
     const { user } = await findUserByFiche(result?.patient?._id);
 
-    io.to(req.query.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
+    // io.to(req.query.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
 
     const formatedData = {
       id: result?._id,
@@ -166,7 +159,6 @@ const upadteAppointment = async (req, res) => {
       motif: result?.motif?.label,
       timeStart: result?.startTime,
       timeEnd: result?.endTime,
-      idCentre: result?.patient?.idCentre,
       date: result?.date,
       displayedDate: formatDate(result?.date) + " à " + result?.startTime,
       provenance: result?.provenance,
@@ -200,7 +192,6 @@ const getAppointments = async (req, res) => {
   let query = {};
 
   // Si des filtres sont definis
-  if (req?.idCentre) query["center"] = req.idCentre;
   if (req.query.idp) query["practitioner"] = { $in: req.query.idp.split(",") };
   if (req.query.idpatient)
     query["patient"] = { $in: req.query.idpatient.split(",") };
@@ -245,8 +236,6 @@ const getAppointments = async (req, res) => {
         motif: appointment.motif.label,
         timeStart: appointment.startTime,
         timeEnd: appointment.endTime,
-        idCentre: appointment?.centre ?? "",
-        lieu: appointment.lieu,
         date: appointment.date,
         displayedDate:
           formatDate(appointment.date) + " à " + appointment.startTime,
@@ -263,7 +252,7 @@ const getAppointments = async (req, res) => {
         dateLong: appointment.date_long ?? "",
         dateRdv: appointment.date,
         backgroundColor: appointment.motif?.couleur,
-        borderColor: appointment.borderColor
+        borderColor: appointment.borderColor,
       });
     }
 
@@ -372,10 +361,8 @@ const deleteAll = async (req, res) => {
 const deleteOne = async (req, res) => {
   const { io } = req;
   try {
-    const result = await appointmentService.findAndDelete(req.params.id, {
-      center: req.idCentre,
-    });
-    io.to(req.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
+    const result = await appointmentService.findAndDelete(req.params.id);
+    // io.to(req.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
     return handler.successHandler(
       res,
       "Le rendez-vous a bien été supprimé",
@@ -428,7 +415,7 @@ const duplicateAppointment = async (req, res) => {
     delete copy._id;
 
     const duplicata = await appointementService.createAppointment(copy);
-    io.to(req.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
+    // io.to(req.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
     return handler.successHandler(res, duplicata, httpStatus.CREATED);
   } catch (error) {
     return handler.errorHandler(
