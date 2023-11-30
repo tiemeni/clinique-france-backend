@@ -9,12 +9,9 @@ const { generateRandomCode, sendCodeVerif } = require("../../helpers");
 
 const createUser = async (req, res) => {
   const data = req.body;
-  console.log(data);
   try {
     // if user already exist
-    const condition = req.idCentre
-      ? { email: data.email, idCentre: req.idCentre }
-      : { email: data.email };
+    const condition = { email: data.email };
     const isUserExist = await userService.findOneByQuery(condition);
     if (isUserExist)
       return handler.errorHandler(
@@ -24,9 +21,7 @@ const createUser = async (req, res) => {
       );
 
     //create and store the new user
-    const payload = req.idCentre
-      ? { ...data, idCentre: req.idCentre }
-      : { ...data };
+    const payload = { ...data };
     const user = await userService.createUser(payload);
 
     const token = await auth.generateToken({
@@ -50,13 +45,10 @@ const createUser = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  console.log("in here ..............")
   const { email, password } = req.body;
 
   try {
-    const condition = req.idCentre
-      ? { email: email, idCentre: req.idCentre }
-      : { email: email };
+    const condition = { email: email };
     const user = await userService.findOneByQuery(condition);
     if (!user) {
       return handler.errorHandler(
@@ -98,13 +90,10 @@ const signIn = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const condition = req.idCentre
-      ? {
-          _id: req.params.userid,
-          idCentre: req.idCentre,
-          isPraticien: req.query.isPraticien ?? false,
-        }
-      : { _id: req.params.userid, isPraticien: req.query.isPraticien ?? false };
+    const condition = {
+      _id: req.params.userid,
+      isPraticien: req.query.isPraticien ?? false,
+    };
     const foundUser = await userService.findOneByQuery(condition);
     if (foundUser == null)
       return handler.errorHandler(res, "No user founded", httpStatus.NOT_FOUND);
@@ -118,22 +107,17 @@ const getUserById = async (req, res) => {
   }
 };
 
-const getPraticienByIdLieu = async (req, res) => {
+const getPraticienByIdSpeciality = async (req, res) => {
   console.log("here");
   let concernedPraticens = [];
   try {
-    const condition = req.query.idCentre
-      ? { idCentre: req.query.idCentre, isPraticien: true }
-      : { isPraticien: true };
+    const condition = { isPraticien: true };
     const foundUser = await userService.findUserByQuery(condition);
     if (foundUser == null)
       return handler.errorHandler(res, "No user founded", httpStatus.NOT_FOUND);
-    req.query.idLieu &&
+    req.query.idSpeciality &&
       foundUser?.forEach((e, _i) => {
-        if (
-          e.affectation?.find((o) => o?._id == req.query.idLieu) &&
-          e.job?._id == req.query.idSpeciality
-        ) {
+        if (e.job?._id == req.query.idSpeciality) {
           concernedPraticens.push(e);
         }
       });
@@ -157,7 +141,6 @@ const getUsersGroupByJob = async (req, res) => {
       );
 
     const users = await userService.findAndGroupByJob({
-      idCentre: req.idCentre,
       isPraticien: req.query.isPraticien,
     });
 
@@ -174,9 +157,7 @@ const getUsersGroupByJob = async (req, res) => {
 const getAllUsers = async (req, res) => {
   let foundUsers;
   try {
-    const condition = req.idCentre
-      ? { isPraticien: req.query.isPraticien ?? false, idCentre: req.idCentre }
-      : { isPraticien: req.query.isPraticien ?? false };
+    const condition = { isPraticien: req.query.isPraticien ?? false };
     foundUsers = await userService.findUserByQuery(condition);
     return handler.successHandler(res, foundUsers);
   } catch (err) {
@@ -194,8 +175,7 @@ const updateUserById = async (req, res) => {
     if (extractedPw) extractedPw = await auth.encryptPassword(extractedPw);
     const result = await userService.updateUser(
       req.params.userid,
-      { $set: { ...req.body, password: extractedPw } },
-      req?.idCentre || null
+      { $set: { ...req.body, password: extractedPw } }
     );
     return handler.successHandler(res, result, httpStatus.CREATED);
   } catch (err) {
@@ -335,7 +315,6 @@ const searchPratByKey = async (req, res) => {
   try {
     const founds = await userService.findUserByQuery(query);
     if (founds) {
-      console.log(founds);
       return handler.successHandler(res, founds);
     } else {
       return handler.errorHandler(res, [], 404);
@@ -374,7 +353,7 @@ const searchPraticienByIdSpeciality = async (req, res) => {
 module.exports = {
   createUser,
   processVerifCode,
-  getPraticienByIdLieu,
+  getPraticienByIdSpeciality,
   getUserById,
   getAllUsers,
   updateUserById,
