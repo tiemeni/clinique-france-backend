@@ -145,7 +145,7 @@ const upadteAppointment = async (req, res) => {
     });
 
     // Get user informations
-    const { user } = await findUserByFiche(result?.patient?._id);
+    // const { user } = await findUserByFiche(result?.patient?._id);
 
     // io.to(req.query.idCentre).emit("refetchEvents", "Nouveau rendez-vous crée");
 
@@ -168,7 +168,7 @@ const upadteAppointment = async (req, res) => {
       created_at: result.created_at,
     };
 
-    io.to(user._id.toString()).emit("notification", notification);
+    // io.to(user._id.toString()).emit("notification", notification);
 
     return handler.successHandler(res, formatedData, httpStatus.CREATED);
   } catch (error) {

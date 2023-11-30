@@ -8,7 +8,6 @@ const upload = multer({ storage });
 
 // GET
 router.get('/', userController.getAllUsers);
-router.get('/lieu/', userController.getPraticienByIdLieu);
 router.get('/profession', userController.getUsersGroupByJob);
 router.get('/:userid', userController.getUserById);
 

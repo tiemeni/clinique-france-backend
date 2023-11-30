@@ -33,7 +33,6 @@ const motifModel = mongoose.Schema({
   },
   idProfession: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     ref: PROFESSION,
   },
   idSpeciality: {

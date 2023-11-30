@@ -254,7 +254,7 @@ const getNextWeekdaysFromDate = (dateToday, targetDay) => {
 
 module.exports.formatQuery = (req) => {
   let startDate = formatUtc(new Date());
-  let query = { center: req.idCentre };
+  let query = {};
   let endOfInterval = null;
   let daysTab = null;
   let slot = null;

@@ -5,45 +5,45 @@ const appointmentModel = mongoose.Schema({
     practitioner: {
         type: mongoose.Types.ObjectId,
         ref: USER,
-        require
+        required: true
     },
     patient: {
         type: mongoose.Types.ObjectId,
         ref: PATIENT,
-        require
+        required: true
     },
     motif: {
         type: mongoose.Types.ObjectId,
         ref: MOTIF,
-        require
+        required: true
     },
     startTime: {
         type: String,
-        require
+        required: true
     },
     endTime: {
         type: String,
-        require
+        required: true
     },
     provenance: {
         type: String,
-        require
+        required: true
     },
     duration: {
         type: Number,
-        require
+        required: true
     },
     date: {
         type: Date,
-        require
+        required: true
     },
     date_long: {
         type: Date,
-        require
+        required: true
     },
     dayOfWeek: {
         type: Number,
-        require
+        required: true
     },
     wasMoved: {
         type: Boolean,

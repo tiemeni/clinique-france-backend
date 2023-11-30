@@ -8,7 +8,6 @@ const cors = require("cors");
 const http = require("http");
 
 const auth = require("./src/middlewares/auth.middleware");
-const checkCentre = require("./src/middlewares/center.middleware");
 
 //import all routes
 const usersRoutes = require("./src/routes/user.route");
@@ -78,23 +77,23 @@ server.use((req, res, next) => {
 });
 
 // routes
-server.use("/users", checkCentre, usersRoutes);
+server.use("/users", usersRoutes);
 server.use("/ext_users", extUserToutes);
 server.use("/motif", motifRoutes);
-server.use("/practitiens", checkCentre, practitiensRoutes);
+server.use("/practitiens", practitiensRoutes);
 server.use("/ext_practitiens", extPractitiensRoutes);
 server.use("/ext_specialites", extSpecialitiesRoutes);
-server.use("/specialites", checkCentre, specialitiesRoutes);
-server.use("/patients", checkCentre, patientRoutes);
+server.use("/specialites", specialitiesRoutes);
+server.use("/patients", patientRoutes);
 server.use("/structure", structureRoute);
-server.use("/lieu", checkCentre, lieuRoutes);
+server.use("/lieu", lieuRoutes);
 server.use("/ext_lieu", extLieuRoutes);
 server.use("/droits", rightsRoutes);
-server.use("/groupes", checkCentre, groupsRoutes);
+server.use("/groupes", groupsRoutes);
 server.use("/civilites", civilitiesRoutes);
 server.use("/profession", professionRoutes);
-server.use("/appointments", checkCentre, appointmentRoutes);
-server.use("/notifications", checkCentre, notificationRoutes);
+server.use("/appointments", appointmentRoutes);
+server.use("/notifications", notificationRoutes);
 server.post("/verifyToken", verifyToken);
 server.get("/checkVersion", (req, res) => {
   res.send("version backoffice gatewayDoc 24-07 midi");

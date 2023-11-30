@@ -34,8 +34,6 @@ module.exports = {
         path: "patient",
         select: "-rights -active -password -civility",
       })
-      .populate("center")
-      .populate("lieu")
       .populate({
         path: "practitioner",
         populate: [

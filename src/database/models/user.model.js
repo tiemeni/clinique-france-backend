@@ -49,10 +49,6 @@ const utilisateurModel = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: GROUP,
   },
-  affectation: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: LIEU,
-  },
   job: {
     type: mongoose.Schema.Types.ObjectId,
     ref: SPECIALITY,

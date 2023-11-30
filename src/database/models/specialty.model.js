@@ -14,6 +14,7 @@ const specialtyModel = mongoose.Schema({
   },
   reference: {
     type: String,
+    unique: true
   },
   webAlert: {
     type: String,
@@ -24,7 +25,6 @@ const specialtyModel = mongoose.Schema({
   idProfession: {
     type: mongoose.Schema.Types.ObjectId,
     ref: PROFESSION,
-    default: ID_PROFESSION_SPECIALISTE,
   },
 });
 
