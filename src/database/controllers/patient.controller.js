@@ -9,7 +9,6 @@ const createPatient = async (req, res) => {
     const isPatientExist = await patientService.findOneByQuery({
       email: data.email,
       user: data?.user,
-      idCentre: req.idCentre,
     });
     if (isPatientExist)
       return handler.errorHandler(
@@ -21,7 +20,6 @@ const createPatient = async (req, res) => {
     //create and store the new patient
     const result = await patientService.createPatient({
       ...data,
-      idCentre: req.idCentre,
     });
     return handler.successHandler(res, result, httpStatus.CREATED);
   } catch (err) {
@@ -33,7 +31,6 @@ const deletePatientById = async (req, res) => {
   try {
     const result = await patientService.deleteOne({
       _id: req.params.patientId,
-      idCentre: req.idCentre,
     });
     return handler.successHandler(res, result);
   } catch (err) {
@@ -43,7 +40,7 @@ const deletePatientById = async (req, res) => {
 
 const getAllPatients = async (req, res) => {
   try {
-    const foundPatients = await patientService.findPatients(req.idCentre);
+    const foundPatients = await patientService.findPatients();
     return handler.successHandler(res, foundPatients);
   } catch (err) {
     return handler.errorHandler(res, err, httpStatus.INTERNAL_SERVER_ERROR);
@@ -54,7 +51,6 @@ const getPatientById = async (req, res) => {
   try {
     const foundPatient = await patientService.findOneByQuery({
       _id: req.params.patientId,
-      idCentre: req.idCentre,
     });
     if (foundPatient == null)
       return handler.errorHandler(res, "No user founded", httpStatus.NOT_FOUND);
@@ -68,7 +64,6 @@ const getPatientByName = async (req, res) => {
   try {
     const foundPatient = await patientService.findOneByQuery({
       name: req.params.key,
-      idCentre: req.query.idCentre,
     });
     if (foundPatient == null)
       return handler.errorHandler(res, "No user founded", httpStatus.NOT_FOUND);
@@ -80,11 +75,9 @@ const getPatientByName = async (req, res) => {
 
 const updatePatient = async (req, res) => {
   try {
-    const result = await patientService.updatePatient(
-      req.params.patientId,
-      req.idCentre,
-      { $set: { ...req.body } }
-    );
+    const result = await patientService.updatePatient(req.params.patientId, {
+      $set: { ...req.body },
+    });
     return handler.successHandler(res, result, httpStatus.CREATED);
   } catch (err) {
     return handler.errorHandler(res, err, httpStatus.INTERNAL_SERVER_ERROR);
@@ -109,16 +102,13 @@ const searchPatientsByKey = async (req, res) => {
   const formatQuery = (obj) => {
     let res = {};
     Object.keys(obj).forEach((key) => {
-      res[key] =
-        key?.toString() == "idCentre"
-          ? obj[key]
-          : { $regex: obj[key], $options: "i" };
+      res[key] = { $regex: obj[key], $options: "i" };
     });
     return res;
   };
 
   const query = formatQuery(key);
-  
+
   try {
     const founds = await patientService.findPatientByQuery(query);
     if (founds) {
