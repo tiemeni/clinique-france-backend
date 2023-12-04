@@ -34,7 +34,7 @@ const { verifyToken } = require("./src/routes/verifyToken");
 
 const app = http.createServer(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 const io = require("./socket").initialize(app);
