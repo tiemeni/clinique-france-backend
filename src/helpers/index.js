@@ -27,10 +27,12 @@ module.exports.startServer = async ({
       console.log("setting up the server ...");
       connectDB()
         .then(() => {
-          server.listen(PORT, () => {
-            console.clear();
-            console.log(`started on Port ${PORT} !`);
-          });
+          if (!server.listening) {
+            server.listen(PORT, () => {
+              console.clear();
+              console.log(`started on Port ${PORT} !`);
+            });
+          }
         })
         .catch(async (e) => {
           await server.close();

@@ -101,4 +101,4 @@ server.get("/checkVersion", (req, res) => {
 startServer({ connectDB, server: app, startServer, PORT });
 
 
-export default app;
+// export default app;
