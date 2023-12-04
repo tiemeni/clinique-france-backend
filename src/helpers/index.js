@@ -32,7 +32,8 @@ module.exports.startServer = async ({
             console.log(`started on Port ${PORT} !`);
           });
         })
-        .catch((e) => {
+        .catch(async (e) => {
+          await server.close();
           console.log("storage service error : " + e);
           startServer();
         });
@@ -374,7 +375,7 @@ module.exports.sendNotification = (token, body, title, subtitle) => {
 
 module.exports.getContrastColor = (hexColor) => {
   // Si la couleur est un nom (ex: 'green'), convertir en code hexadécimal
-  const hex = hexColor.startsWith('#') ? hexColor : colorNameToHex(hexColor);
+  const hex = hexColor.startsWith("#") ? hexColor : colorNameToHex(hexColor);
 
   // Extraire les composants RVB
   const r = parseInt(hex.substr(1, 2), 16);
@@ -390,5 +391,5 @@ module.exports.getContrastColor = (hexColor) => {
 
 // Fonction pour convertir le nom de couleur en code hexadécimal
 function colorNameToHex(color) {
-  return colorNames[color.toLowerCase()] ?? "#3788d8"
+  return colorNames[color.toLowerCase()] ?? "#3788d8";
 }

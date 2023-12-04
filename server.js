@@ -98,7 +98,6 @@ server.post("/verifyToken", verifyToken);
 server.get("/checkVersion", (req, res) => {
   res.send("version backoffice gatewayDoc 24-07 midi");
 });
-
 startServer({ connectDB, server: app, startServer, PORT });
 
 
