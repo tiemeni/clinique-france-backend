@@ -32,7 +32,7 @@ const connectDB = require("./src/loaders/mongoose");
 const { startServer } = require("./src/helpers");
 const { verifyToken } = require("./src/routes/verifyToken");
 
-const app = http.createServer(server, {
+export const app = http.createServer(server, {
   cors: {
     origin: "http://localhost:3000",
   },
