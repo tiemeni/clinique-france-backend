@@ -6,8 +6,7 @@ const findUserByQuery = async (query) => {
     .select("-password")
     .populate("civility")
     .populate("groups")
-    .populate("job")
-    .populate("affectation");
+    .populate("job");
 };
 module.exports = {
   createUser: async (user) => {
@@ -41,10 +40,10 @@ module.exports = {
     const groupedUsers = {};
     users.forEach((user) => {
       const { job } = user;
-      if (!groupedUsers[job.title]) {
-        groupedUsers[job.title] = [];
+      if (!groupedUsers[job?.title]) {
+        groupedUsers[job?.title] = [];
       }
-      groupedUsers[job.title].push(user);
+      groupedUsers[job?.title].push(user);
     });
     return groupedUsers;
   },
