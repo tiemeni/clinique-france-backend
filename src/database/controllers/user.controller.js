@@ -64,10 +64,6 @@ const signIn = async (req, res) => {
         username: user.email,
         type: "user",
       });
-      res.cookie(COOKIE_NAME, token, {
-        maxAge: env.EXPIRE_DATE,
-        sameSite: "Lax",
-      });
       return handler.successHandler(res, {
         user,
         access_token: token,

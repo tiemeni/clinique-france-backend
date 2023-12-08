@@ -31,6 +31,7 @@ const notificationRoutes = require("./src/routes/notification.route");
 const connectDB = require("./src/loaders/mongoose");
 const { startServer } = require("./src/helpers");
 const { verifyToken } = require("./src/routes/verifyToken");
+const { disconnectUser } = require("./src/routes/disconnectUser");
 
 const app = http.createServer(server, {
   cors: {
@@ -60,8 +61,8 @@ require("dotenv").config();
 
 server.use(
   cors({
-    origin: "*",
-    methods: "*",
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PATCH"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Origin'],
     credentials: true,
@@ -95,6 +96,7 @@ server.use("/profession", professionRoutes);
 server.use("/appointments", appointmentRoutes);
 server.use("/notifications", notificationRoutes);
 server.post("/verifyToken", verifyToken);
+server.post("/disconnect", disconnectUser);
 server.get("/checkVersion", (req, res) => {
   res.send("version backoffice gatewayDoc 24-07 midi");
 });
