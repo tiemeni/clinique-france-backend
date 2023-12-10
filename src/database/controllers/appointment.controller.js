@@ -83,6 +83,7 @@ const makeAppointment = async (req, res) => {
       startTime: data.startTime,
       practitioner: data.practitioner,
     });
+    console.log(isExist)
     if (isExist)
       return handler.errorHandler(
         res,
@@ -109,9 +110,8 @@ const makeAppointment = async (req, res) => {
       type: notificationType.APPOINTMENT_CREATED,
     });
     // Get user informations
-    const { user } = await findUserByFiche(data.patient);
-
-    io.to(user._id.toString()).emit("notification", notification);
+    //const { user } = await findUserByFiche(data.patient);
+    //io.to(user._id.toString()).emit("notification", notification);
     return handler.successHandler(res, rdv, httpStatus.CREATED);
   } catch (error) {
     return handler.errorHandler(
