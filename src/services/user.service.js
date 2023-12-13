@@ -28,7 +28,7 @@ module.exports = {
       .populate("job");
   },
   updateUser: async (id, query) => {
-    console.log(query);
+    console.log("-----",query);
     let request = { _id: id };
     return await User.findOneAndUpdate(request, query, { new: true });
   },
