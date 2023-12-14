@@ -8,8 +8,11 @@ const upload = multer({ storage });
 
 // GET
 router.get('/', userController.getAllUsers);
+router.get("/search", userController.searhUserByKey);
 router.get('/profession', userController.getUsersGroupByJob);
 router.get('/:userid', userController.getUserById);
+
+
 
 // POST
 router.post('/signin', userController.signIn);

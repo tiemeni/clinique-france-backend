@@ -224,7 +224,6 @@ const getAppointments = async (req, res) => {
       startDate.setMinutes(parseInt(startMinute, 10));
       endDate.setHours(parseInt(endHour, 10));
       endDate.setMinutes(parseInt(endMinute, 10));
-
       result.push({
         _id: appointment._id,
         civility: civility?.abreviation || civility?.label,
@@ -285,15 +284,21 @@ const presaveAppointment = (req, res) => {
  * @returns listes de disponibilites
  */
 const searchAvailabilities = async (req, res) => {
+  console.log("on search availabilities")
   let appointements = [];
   let practitioner = {};
   let availabilities = [];
   const { query, startDate, endOfInterval, daysTab, querySlot } =
     formatQuery(req);
-
   practitioner = await userService.findUserById(req.query.idp);
   appointements = await appointementService.findByQuery(query);
-
+  console.log("daysTab -- ", daysTab)
+  console.log("startDate -- ", startDate)
+  console.log("endOfInterval -- ", endOfInterval)
+  console.log("querySlot -- ", querySlot)
+  console.log("appointements -- ", appointements)
+ 
+console.log("------------in here ---------------")
   // Grouper les rdvs par jour
   const groupedRdv = {};
   appointements.forEach((rdv) => {
@@ -309,7 +314,7 @@ const searchAvailabilities = async (req, res) => {
   const rdvs = replaceIfEmpty(groupedRdv, slot);
 
   availabilities = calculateAvailability(practitioner, rdvs, querySlot);
-
+  console.log("------------in here 2 ---------------")
   if (availabilities.length === 0) {
     let errMsg = "Aucune disponibilité avec ce praticien";
     const Filterlength = Object.keys(query).length;

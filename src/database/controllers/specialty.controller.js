@@ -65,4 +65,28 @@ const deleteSpecialtyById = async (req, res) => {
     }
 }
 
-module.exports = { createSpecialty, getAllSpecialties, updateSpecialtyById, deleteSpecialtyById, getOneSpecialty, getSpecialitiesByIdProfession }
+const searhSpecByKey = async (req, res) => {
+    let key = req.query;
+    const formatQuery = (obj) => {
+      let res = {};
+      Object.keys(obj).forEach((key) => {
+        res[key] = { $regex: obj[key], $options: "i" };
+      });
+      return res;
+    };
+  
+    const query = formatQuery(key);
+  
+    try {
+      const founds = await specialtyService.findSpecialtyByQuery(query);
+      if (founds) {
+        return handler.successHandler(res, founds);
+      } else {
+        return handler.errorHandler(res, [], 404);
+      }
+    } catch (error) {
+      handler.errorHandler(res, error, httpStatus.INTERNAL_SERVER_ERROR);
+    }
+  };
+
+module.exports = { createSpecialty, getAllSpecialties, updateSpecialtyById, deleteSpecialtyById, getOneSpecialty, getSpecialitiesByIdProfession, searhSpecByKey }

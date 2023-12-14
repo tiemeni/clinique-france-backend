@@ -102,17 +102,25 @@ module.exports.calculateAvailability = (
   appointments,
   querySlot
 ) => {
-  const startTime = querySlot
-    ? querySlot.start
-    : practitioner.startTime || "08:00";
-  const endTime = querySlot ? querySlot.end : practitioner.endTime ?? "18:00";
+  console.log("------------process avail ---------------")
+  console.log("------------appointments ---------------", appointments)
+  console.log("------------querySlot ---------------", querySlot)
+  console.log("------------practitioner ---------------", practitioner)
+
+  const startTime = querySlot.start ?? (practitioner.startTime || "08:00");
+  const endTime = querySlot.end ?? (practitioner.endTime || "18:00");
   const rangeEnd = convertTime(endTime);
 
+  // table des clee de chaque jours
   const keys = Object.keys(appointments);
+
+  // initialisation des diso a un tableau vide
   const availabilities = [];
 
   for (let key of keys) {
     const rdvs = appointments[key];
+
+    // slot start 
     let currentTime = convertTime(startTime);
 
     for (const appointment of rdvs) {
@@ -120,12 +128,12 @@ module.exports.calculateAvailability = (
       if (appointmentStart > currentTime) {
         const differenceInMinutes =
           (appointmentStart - currentTime) / (1000 * 60);
-        if (differenceInMinutes >= practitioner.timeSlot) {
-          const reste = Math.floor(differenceInMinutes / practitioner.timeSlot);
+        if (differenceInMinutes >= (practitioner.timeSlot ?? 10)) {
+          const reste = Math.floor(differenceInMinutes / (practitioner.timeSlot ?? 10));
 
           for (let index = 0; index < reste; index++) {
             const availableTime = new Date(
-              currentTime.getTime() + practitioner.timeSlot * 60 * 1000 * index
+              currentTime.getTime() + (practitioner.timeSlot ?? 10) * 60 * 1000 * index
             );
             if (availableTime < rangeEnd) {
               availabilities.push(
@@ -138,6 +146,7 @@ module.exports.calculateAvailability = (
       currentTime = convertTime(appointment.endTime);
     }
     // Add availabilities until the end of the time range
+    console.log("currentTime, rangeEnd --------- ", currentTime, rangeEnd )
     while (currentTime < rangeEnd) {
       const isEqual = currentTime.getTime() == convertTime(startTime).getTime();
       if (isEqual) {
@@ -147,12 +156,13 @@ module.exports.calculateAvailability = (
       }
 
       currentTime = new Date(
-        currentTime.getTime() + practitioner.timeSlot * 60 * 1000
+        currentTime.getTime() + (practitioner.timeSlot ?? 10) * 60 * 1000
       );
       if (currentTime <= rangeEnd) {
         availabilities.push(formatResult(key, practitioner, currentTime));
       }
     }
+    console.log("availabilities --------- ", availabilities)
   }
 
   const filtered = removeTodayExpiredDispo(availabilities);
@@ -377,7 +387,7 @@ module.exports.sendNotification = (token, body, title, subtitle) => {
 
 module.exports.getContrastColor = (hexColor) => {
   // Si la couleur est un nom (ex: 'green'), convertir en code hexadécimal
-  const hex = hexColor.startsWith("#") ? hexColor : colorNameToHex(hexColor);
+  const hex = hexColor?.startsWith("#") ? hexColor : colorNameToHex(hexColor);
 
   // Extraire les composants RVB
   const r = parseInt(hex.substr(1, 2), 16);

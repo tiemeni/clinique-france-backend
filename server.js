@@ -62,7 +62,7 @@ require("dotenv").config();
 server.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PATCH"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Origin'],
     credentials: true,

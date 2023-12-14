@@ -3,8 +3,10 @@ const specialiteController = require('../database/controllers/specialty.controll
 
 //get
 router.get('/', specialiteController.getAllSpecialties);
+router.get("/search", specialiteController.searhSpecByKey);
 router.get('/profession/:idProfession', specialiteController.getSpecialitiesByIdProfession);
 router.get('/:id', specialiteController.getOneSpecialty);
+
 //post
 router.post('/', specialiteController.createSpecialty);
 //patch
