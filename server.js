@@ -11,6 +11,7 @@ const auth = require("./src/middlewares/auth.middleware");
 
 //import all routes
 const usersRoutes = require("./src/routes/user.route");
+const consigneRoutes = require("./src/routes/consigne.route");
 const professionRoutes = require("./src/routes/profession.routes");
 const motifRoutes = require("./src/routes/motif.route");
 const lieuRoutes = require("./src/routes/lieu.route");
@@ -61,7 +62,7 @@ require("dotenv").config();
 
 server.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://10.10.90.8:3000", "http://10.10.90.17:3000", "http://localhost:3000"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Origin'],
@@ -81,6 +82,7 @@ server.use((req, res, next) => {
 server.use("/users", usersRoutes);
 server.use("/ext_users", extUserToutes);
 server.use("/motif", motifRoutes);
+server.use("/consignes", consigneRoutes);
 server.use("/practitiens", practitiensRoutes);
 server.use("/ext_practitiens", extPractitiensRoutes);
 server.use("/ext_specialites", extSpecialitiesRoutes);
