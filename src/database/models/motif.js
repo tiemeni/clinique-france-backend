@@ -5,6 +5,7 @@ const {
   LIEU,
   SPECIALITY,
   CENTRE,
+  CONSIGNE,
 } = require("../../constants/entity");
 
 const motifModel = mongoose.Schema({
@@ -30,6 +31,10 @@ const motifModel = mongoose.Schema({
   active: {
     type: Boolean,
     required: true,
+  },
+  idConsigne: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: CONSIGNE
   },
   idProfession: {
     type: mongoose.Schema.Types.ObjectId,

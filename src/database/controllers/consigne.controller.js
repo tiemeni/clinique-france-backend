@@ -47,4 +47,13 @@ const updateConsigne = async (req, res) => {
     }
 }
 
-module.exports = { createConsigne, updateConsigne, getAllConsignes, getConsigneById }
+const deleteConsigneById = async (req, res) => {
+    try {
+        const result = await consigneService.deleteOne({ _id: req.params.consigneId });
+        return handler.successHandler(res, result)
+    } catch (err) {
+        return handler.errorHandler(res, err, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+module.exports = { createConsigne, updateConsigne, getAllConsignes, getConsigneById, deleteConsigneById }

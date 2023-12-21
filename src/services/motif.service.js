@@ -11,7 +11,7 @@ module.exports = {
     return await Motif.findById(id);
   },
   findMotifs: async () => {
-    return await Motif.find();
+    return await Motif.find().populate("idConsigne");;
   },
   findMotifsByQuery: async (query) => {
     return await Motif.find(query)

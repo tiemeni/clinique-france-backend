@@ -20,4 +20,7 @@ module.exports = {
     findGroupsByQuery: async () => {
         return await Consigne.find({})
     },
+    deleteOne: async (query) => {
+        return await Consigne.deleteOne(query);
+    },
 }
