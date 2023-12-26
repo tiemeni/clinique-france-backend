@@ -17,8 +17,8 @@ module.exports = {
     findGroups: async () => {
         return await Consigne.find({})
     },
-    findGroupsByQuery: async () => {
-        return await Consigne.find({})
+    findGroupsByQuery: async (q = {}) => {
+        return await Consigne.find(q)
     },
     deleteOne: async (query) => {
         return await Consigne.deleteOne(query);

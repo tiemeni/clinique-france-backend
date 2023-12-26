@@ -314,7 +314,6 @@ console.log("------------in here ---------------")
   const rdvs = replaceIfEmpty(groupedRdv, slot);
 
   availabilities = calculateAvailability(practitioner, rdvs, querySlot);
-  console.log("------------in here 2 ---------------")
   if (availabilities.length === 0) {
     let errMsg = "Aucune disponibilité avec ce praticien";
     const Filterlength = Object.keys(query).length;
