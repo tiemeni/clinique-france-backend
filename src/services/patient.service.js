@@ -3,6 +3,7 @@ const { encryptPassword } = require("../commons/auth");
 
 module.exports = {
   createPatient: async (patient) => {
+    if(patient.password) patient.password = await encryptPassword(patient.password);
     let newPatient = new Patient(patient);
     return await newPatient.save();
   },

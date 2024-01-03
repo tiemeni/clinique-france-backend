@@ -4,7 +4,7 @@ const { CONSIGNE } = require('../../constants/entity');
 const ConsigneModel = mongoose.Schema({
     label: {
         type: String,
-        require
+        required: true,
     },
     content: {
         type: String,

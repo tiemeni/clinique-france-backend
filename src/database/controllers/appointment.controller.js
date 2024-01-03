@@ -192,7 +192,7 @@ const getAppointments = async (req, res) => {
   let query = {};
 
   // Si des filtres sont definis
-  if (req.query.idp) query["practitioner"] = { $in: req.query.idp.split(",") };
+  if (req.query.idp) query["practitioner"] = { $in: req.query.idp?.split(",") };
   if (req.query.idpatient)
     query["patient"] = { $in: req.query.idpatient.split(",") };
   if (req.query.idRdv) query["_id"] = req.query.idRdv;

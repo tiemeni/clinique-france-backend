@@ -9,6 +9,7 @@ module.exports = {
     },
     verifyPassword: async (password, passwordDB) => {
         const result = await bcrypt.compare(password, passwordDB);
+        console.log(result)
         return result;
     },
     generateToken: async (payload) => {

@@ -14,7 +14,7 @@ const createPatient = async (req, res) => {
       return handler.errorHandler(
         res,
         isPatientExist._id,
-        httpStatus.BAD_REQUEST
+        httpStatus.ACCEPTED
       );
 
     //create and store the new patient

@@ -6,28 +6,30 @@ const specialityService = require("../../services/specialty.service");
 const { env } = require("../../config/env/variables");
 const cloudinary = require("../../../cloudinary.config");
 const { generateRandomCode, sendCodeVerif } = require("../../helpers");
+const patientService = require("../../services/patient.service");
 
 const createUser = async (req, res) => {
   const data = req.body;
   try {
+    console.log(req.query.module)
     // if user already exist
     const condition = { email: data.email };
-    const isUserExist = await userService.findOneByQuery(condition);
+    const isUserExist =  req.query.module !== "externe" ? await userService.findOneByQuery(condition) : await patientService.findOneByQuery(condition);
     if (isUserExist)
       return handler.errorHandler(
         res,
-        "L'utilisateur existe déjà",
+        req.query.module !== "externe" ? "L'utilisateur existe déjà" : "Le patient existe déjà",
         httpStatus.BAD_REQUEST
       );
 
     //create and store the new user
     const payload = { ...data };
-    const user = await userService.createUser(payload);
+    const user = req.query.module !== "externe" ? await userService.createUser(payload) : await patientService.createPatient(payload);
 
     const token = await auth.generateToken({
       id: user._id,
       username: user.email,
-      type: "user",
+      type: req.query.module !== "externe" ? "user" : "patient",
     });
 
     return handler.successHandler(
@@ -49,20 +51,22 @@ const signIn = async (req, res) => {
 
   try {
     const condition = { email: email };
-    const user = await userService.findOneByQuery(condition);
+    const user = req.query.module !== "externe" ? await userService.findOneByQuery(condition) : await patientService.findOneByQuery(condition);
     if (!user) {
       return handler.errorHandler(
         res,
-        "User doesn't exist in our system",
+        req.query.module !== "externe" ? "l'utilisateur n'existe pas" : "Le patient n'existe pas",
         httpStatus.NOT_FOUND
       );
     }
+
+    console.log(user.password === password)
 
     if (await auth.verifyPassword(password, user.password)) {
       const token = await auth.generateToken({
         id: user._id,
         username: user.email,
-        type: "user",
+        type: req.query.module !== "externe" ? "user" : "patient",
       });
       return handler.successHandler(res, {
         user,
