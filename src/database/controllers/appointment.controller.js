@@ -200,7 +200,7 @@ const getAppointments = async (req, res) => {
   // Get des fiches patients
   if (req.query.iduser) {
     const patients = await patientService.findPatientByQuery({
-      user: req.query.iduser,
+      _id: req.query.iduser,
     });
     const idList = patients.map(({ _id }) => _id);
 
@@ -292,13 +292,7 @@ const searchAvailabilities = async (req, res) => {
     formatQuery(req);
   practitioner = await userService.findUserById(req.query.idp);
   appointements = await appointementService.findByQuery(query);
-  console.log("daysTab -- ", daysTab)
-  console.log("startDate -- ", startDate)
-  console.log("endOfInterval -- ", endOfInterval)
-  console.log("querySlot -- ", querySlot)
-  console.log("appointements -- ", appointements)
  
-console.log("------------in here ---------------")
   // Grouper les rdvs par jour
   const groupedRdv = {};
   appointements.forEach((rdv) => {

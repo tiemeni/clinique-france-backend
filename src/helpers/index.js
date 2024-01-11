@@ -102,13 +102,9 @@ module.exports.calculateAvailability = (
   appointments,
   querySlot
 ) => {
-  console.log("------------process avail ---------------")
-  console.log("------------appointments ---------------", appointments)
-  console.log("------------querySlot ---------------", querySlot)
-  console.log("------------practitioner ---------------", practitioner)
 
-  const startTime = querySlot.start ?? (practitioner.startTime || "08:00");
-  const endTime = querySlot.end ?? (practitioner.endTime || "18:00");
+  const startTime = querySlot.start || (practitioner.startTime || "08:00");
+  const endTime = querySlot.end || (practitioner.endTime || "18:00");
   const rangeEnd = convertTime(endTime);
 
   // table des clee de chaque jours

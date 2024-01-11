@@ -62,7 +62,7 @@ require("dotenv").config();
 
 server.use(
   cors({
-    origin: ["http://10.10.90.253:3000", "http://10.10.90.17:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
+    origin: ["http://10.10.90.235:3000", "http://10.10.90.60:3000", "http://10.10.90.17:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Origin'],
