@@ -267,7 +267,7 @@ const updatePushToken = async (req, res) => {
     const { token } = req.body;
     const userId = req.params.userid;
 
-    await userService.findAndUpdate(userId, { expoToken: token });
+    req.query.module === "externe" ? await userService.findAndUpdate(userId, { expoToken: token }) : await userService.findAndUpdate(userId, { expoToken: token });
     return handler.successHandler(res, {
       message: "Le token a bien été enregistré",
     });

@@ -44,6 +44,7 @@ const fichePatientModel = mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  expoToken: { type: String },
   rights: [
     {
       type: mongoose.Schema.Types.ObjectId,
