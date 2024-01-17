@@ -100,7 +100,7 @@ server.use("/notifications", notificationRoutes);
 server.post("/verifyToken", verifyToken);
 server.post("/disconnect", disconnectUser);
 server.get("/checkVersion", (req, res) => {
-  res.send("version backoffice gatewayDoc 24-07 midi");
+  res.send(new Date().toLocaleDateString());
 });
 startServer({ connectDB, server: app, startServer, PORT });
 
