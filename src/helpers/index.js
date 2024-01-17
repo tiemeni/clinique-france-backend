@@ -103,8 +103,8 @@ module.exports.calculateAvailability = (
   querySlot
 ) => {
 
-  const startTime = querySlot.start || (practitioner.startTime || "08:00");
-  const endTime = querySlot.end || (practitioner.endTime || "18:00");
+  const startTime = querySlot && querySlot.start || (practitioner.startTime || "08:00");
+  const endTime = querySlot && querySlot.end || (practitioner.endTime || "18:00");
   const rangeEnd = convertTime(endTime);
 
   // table des clee de chaque jours
@@ -142,7 +142,6 @@ module.exports.calculateAvailability = (
       currentTime = convertTime(appointment.endTime);
     }
     // Add availabilities until the end of the time range
-    console.log("currentTime, rangeEnd --------- ", currentTime, rangeEnd )
     while (currentTime < rangeEnd) {
       const isEqual = currentTime.getTime() == convertTime(startTime).getTime();
       if (isEqual) {
@@ -160,9 +159,7 @@ module.exports.calculateAvailability = (
     }
     console.log("availabilities --------- ", availabilities)
   }
-
   const filtered = removeTodayExpiredDispo(availabilities);
-
   return filtered;
 };
 

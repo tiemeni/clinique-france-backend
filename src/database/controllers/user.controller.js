@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
     console.log(req.query.module)
     // if user already exist
     const condition = { email: data.email };
-    const isUserExist =  req.query.module !== "externe" ? await userService.findOneByQuery(condition) : await patientService.findOneByQuery(condition);
+    const isUserExist = req.query.module !== "externe" ? await userService.findOneByQuery(condition) : await patientService.findOneByQuery(condition);
     if (isUserExist)
       return handler.errorHandler(
         res,
@@ -173,7 +173,10 @@ const updateUserById = async (req, res) => {
   try {
     let extractedPw = req.body.password;
     if (extractedPw) extractedPw = await auth.encryptPassword(extractedPw);
-    const result = await userService.updateUser(
+    const result = req.query.module === "externe" ? await patientService.updatePatient(
+      req.params.userid,
+      { $set: { ...req.body, password: extractedPw } }
+    ) : await userService.updateUser(
       req.params.userid,
       { $set: { ...req.body, password: extractedPw } }
     );
@@ -214,6 +217,7 @@ const deleteAllUsers = async (req, res) => {
 };
 
 const uploadPicture = async (req, res) => {
+  console.log("here")
   try {
     const userId = req.params.userid;
     const photo = req.file.buffer;
@@ -226,14 +230,14 @@ const uploadPicture = async (req, res) => {
         },
         async (error, result) => {
           if (error) {
+            console.log("here 1")
             return handler.errorHandler(
               res,
               "Erreur lors du téléchargement vers Cloudinary: " + error,
               httpStatus.INTERNAL_SERVER_ERROR
             );
           }
-
-          const user = await userService.findUserById(userId);
+          const user =  req.query.module === "externe" ? await patientService.findPatientById(userId) : await userService.findUserById(userId);
           if (!user) {
             return handler.errorHandler(
               res,
@@ -282,7 +286,8 @@ const processVerifCode = async (req, res) => {
     const { email } = req.body;
     const register = req.body.register;
     let codeVerif;
-    const userExist = await userService.findOneByQuery({ email: email });
+    const userExist = req.query.module === "externe" ? await patientService.findOneByQuery({ email: email }) : await userService.findOneByQuery({ email: email });
+    console.log(userExist)
     if ((userExist && !register) || (register === true && !userExist)) {
       codeVerif = generateRandomCode();
       const callbacks = {

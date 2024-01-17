@@ -104,7 +104,7 @@ const makeAppointment = async (req, res) => {
         new Date(result.date_long),
         "EEEE dd MMMM yyyy à HH:mm",
         { locale: fr }
-      )} au lieu dit Clinique de France}`,
+      )} au lieu dit Clinique de France`,
       receiver: data.patient,
       appointment: result?._id,
       type: notificationType.APPOINTMENT_CREATED,

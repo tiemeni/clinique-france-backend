@@ -10,13 +10,14 @@ const upload = multer({ storage });
 router.get('/', userController.getAllUsers);
 router.get("/search", userController.searhUserByKey);
 router.get('/profession', userController.getUsersGroupByJob);
+router.get('/speciality', userController.getPraticienByIdSpeciality);
 router.get('/:userid', userController.getUserById);
-
-
+router.get('/searchBySpeciality/:searchKey', userController.searchPraticienByIdSpeciality);
 
 // POST
 router.post('/signin', userController.signIn);
 router.post('/register', userController.createUser);
+router.post('/process_verif_code/', userController.processVerifCode);
 
 
 // PATCH

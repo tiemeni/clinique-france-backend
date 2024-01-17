@@ -23,12 +23,12 @@ const createNofitication = async (req, res) => {
 
 const getNotifications = async (req, res) => {
   try {
-    const idList = await extractFiches(req.query.iduser);
+  //  const idList = await extractFiches(req.query.iduser);
 
     const result = await notificationService.getByQuery({
-      receiver: { $in: idList },
+      receiver: { $in: [req.query.iduser] },
     });
-    return handler.successHandler(res, result, httpStatus.CREATED);
+    return handler.successHandler(res, result.slice(0, 5), httpStatus.CREATED);
   } catch (error) {
     return handler.errorHandler(res, error);
   }
@@ -36,9 +36,9 @@ const getNotifications = async (req, res) => {
 
 const getNumbersUnreadedNotifications = async (req, res) => {
   try {
-    const idList = await extractFiches(req.query.iduser);
+   // const idList = await extractFiches(req.query.iduser);
     const result = await notificationService.getByQuery({
-      receiver: { $in: idList },
+      receiver: { $in: [req.query.iduser] },
       unreaded: true,
     });
 
@@ -54,9 +54,9 @@ const getNumbersUnreadedNotifications = async (req, res) => {
 
 const markNotificationsAsReaded = async (req, res) => {
   try {
-    const idList = await extractFiches(req.query.iduser);
+  //  const idList = await extractFiches(req.query.iduser);
     await notificationService.updateNotifications(
-      { receiver: { $in: idList } },
+      { receiver: { $in: [req.query.iduser] } },
       { $set: { unreaded: false } }
     );
 
