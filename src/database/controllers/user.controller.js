@@ -263,11 +263,13 @@ const uploadPicture = async (req, res) => {
 };
 
 const updatePushToken = async (req, res) => {
+  console.log("top")
   try {
     const { token } = req.body;
     const userId = req.params.userid;
 
-    req.query.module !== "externe" ? await userService.findAndUpdate(userId, { expoToken: token }) : await userService.findAndUpdate(userId, { expoToken: token });
+    const result = req.query.module !== "externe" ? await userService.findAndUpdate(userId, { expoToken: token }) : await patientService.updatePatient(userId, { expoToken: token });
+    console.log(result)
     return handler.successHandler(res, {
       message: "Le token a bien été enregistré",
     });

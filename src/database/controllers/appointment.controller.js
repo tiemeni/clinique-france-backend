@@ -43,13 +43,13 @@ const task = cron.schedule("* * * * *", async () => {
 
   appointments.forEach(async (appointment) => {
     const patient = await patientService.findPatientById(
-      appointment.patient._id
+      appointment?.patient?._id
     );
     if (!patient) {
       console.error("Utilisateur non trouvé pour le rendez-vous");
       return;
     }
-    const userExpoToken = patient?.user?.expoToken;
+    const userExpoToken = patient?.expoToken;
     const alreadySent = appointment?.sent;
     if (userExpoToken && !alreadySent) {
       try {
