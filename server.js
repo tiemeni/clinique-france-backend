@@ -67,6 +67,7 @@ server.use(
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', "Access-Control-Allow-Origin"],
     credentials: true,
+    exposedHeaders: ["Access-Control-Allow-Origin"]
   })
 );
 server.use(express.static("public"));
