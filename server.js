@@ -63,7 +63,7 @@ require("dotenv").config();
 server.use(
   cors({
     origin: ["http://10.10.90.10:3000", "https://clinique-france-frontend.vercel.app/", "http://10.10.90.60:3000", "http://10.10.90.5:3000", "http://10.10.90.16:3000", "http://10.10.90.60:3000", "http://10.10.90.11:3000", "http://10.10.90.60:3000", "http://10.10.90.17:3000","http://192.168.43.35:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', "Access-Control-Allow-Origin"],
     credentials: true,
