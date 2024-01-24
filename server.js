@@ -74,6 +74,10 @@ server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://clinique-france-frontend.vercel.app")
+  next();
+});
+server.use((req, res, next) => {
   req.io = io;
   next();
 });
