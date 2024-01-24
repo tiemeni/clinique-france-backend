@@ -4,6 +4,7 @@
         "source": "/(.*)",
         "headers": [
           { "key": "Access-Control-Allow-Credentials", "value": "true" },
+          { "key": "Access-Control-Max-Age", "value": "10000" },
           { "key": "Access-Control-Allow-Origin", "value": "https://clinique-france-frontend.vercel.app" },
           { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
           { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Auth-Token, Origin, X-JSON" }
