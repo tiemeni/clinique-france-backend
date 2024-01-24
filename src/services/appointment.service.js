@@ -28,6 +28,11 @@ module.exports = {
       .select("-patient")
       .populate({
         path: "motif",
+        populate: [
+          {
+            path: "idConsigne"
+          }
+        ],
         select: "-active -default_time",
       })
       .populate({
@@ -49,7 +54,7 @@ module.exports = {
           },
         ],
       })
-      .sort({ date_long: 1 });
+      .sort({ date_long: -1 });
   },
   findAll: async (query) => {
     return await Appointment.find(query);

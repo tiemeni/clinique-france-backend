@@ -10,5 +10,5 @@ exports.successHandler = (res, data, statusCode = 200) => {
 }
 
 exports.errorHandler = (res, message, statusCode = 400, data = null) => {
-    res.status(statusCode).json({ success: false, message: message, data });
+    res.status(statusCode).json({ success: false, message , data });
 }

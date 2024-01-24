@@ -6,7 +6,7 @@ const path = require("path");
 const PORT = process.env.PORT || 3500;
 const cors = require("cors");
 const http = require("http");
-
+//const serverless = require("serverless-http")
 const auth = require("./src/middlewares/auth.middleware");
 
 //import all routes
@@ -62,10 +62,10 @@ require("dotenv").config();
 
 server.use(
   cors({
-    origin: ["http://10.10.90.10:3000","https://clinique-france-frontend.vercel.app", "http://10.10.90.60:3000", "http://10.10.90.11:3000", "http://10.10.90.60:3000", "http://10.10.90.17:3000","http://192.168.43.35:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+    origin: ["http://10.10.90.10:3000", "https://clinique-france-frontend.vercel.app/", "http://10.10.90.60:3000", "http://10.10.90.5:3000", "http://10.10.90.16:3000", "http://10.10.90.60:3000", "http://10.10.90.11:3000", "http://10.10.90.60:3000", "http://10.10.90.17:3000","http://192.168.43.35:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS", "HEAD", "CONNECT"],
     preflightContinue: true,
-    allowedHeaders: ['Authorization', 'Content-Type', 'Access-Control-Allow-Origin'],
+    allowedHeaders: ['Authorization', 'Content-Type'],
     credentials: true,
   })
 );
@@ -105,4 +105,3 @@ server.get("/checkVersion", (req, res) => {
 startServer({ connectDB, server: app, startServer, PORT });
 
 
-// export default app;
