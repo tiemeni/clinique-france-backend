@@ -50,6 +50,7 @@ const signIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    console.log(email.password)
     const condition = { email: email };
     const user = req.query.module !== "externe" ? await userService.findOneByQuery(condition) : await patientService.findOneByQuery(condition);
     if (!user) {
