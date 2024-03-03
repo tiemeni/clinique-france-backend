@@ -62,7 +62,7 @@ require("dotenv").config();
 
 server.use(
   cors({
-    origin: ["http://10.10.90.10:3000", "https://clinique-france-frontend.vercel.app", "http://10.10.90.60:3000", "http://10.10.90.5:3000", "http://10.10.90.16:3000", "http://10.10.90.60:3000", "http://10.10.90.11:3000", "http://10.10.90.60:3000", "http://10.10.90.17:3000","http://192.168.43.35:3000", "http://localhost:3000", "http://10.10.90.239:3000"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', "Access-Control-Allow-Origin"],
@@ -73,17 +73,6 @@ server.use(express.static("public"));
 server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === 'OPTIONS') {
-    return res.status(200).json({
-      body: 'OK'
-    })
-  }
-  next();
-});
 server.use((req, res, next) => {
   req.io = io;
   next();
