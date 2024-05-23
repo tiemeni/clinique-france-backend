@@ -15,6 +15,6 @@ module.exports.verifyToken = async (req, res) => {
         }
         errorHandler(res, "token not valid", 404)
     } catch (e) {
-        errorHandler(res, `token not valid server have error, ${e.message | e.stack}`, 503)
+        errorHandler(res, `token not valid server have error, ${e}`, 503)
     }
 }
