@@ -60,9 +60,20 @@ io.on("connection", (socket) => {
 
 require("dotenv").config();
 
+const allowedOrigins = ['https://clinique-france-frontend-one.vercel.app'];
+
 server.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: function (origin, callback) {
+      if (!origin) {
+        return callback(null, true);  // Autoriser les requêtes locales sans origine définie
+      }
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = 'cette origine n\'est pas autorisée.';
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', "Access-Control-Allow-Origin"],
@@ -101,6 +112,20 @@ server.post("/verifyToken", verifyToken);
 server.post("/disconnect", disconnectUser);
 server.get("/checkVersion", (req, res) => {
   res.send(new Date().toLocaleDateString());
+});
+
+// Gestionnaire d'erreurs global
+server.use((err, req, res, next) => {
+  if (err) {
+    // Envoyer une réponse d'erreur au client
+    res.status(500).json({
+      error: {
+        message: err.message,
+      },
+    });
+  } else {
+    next();
+  }
 });
 startServer({ connectDB, server: app, startServer, PORT });
 
