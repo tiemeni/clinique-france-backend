@@ -8,7 +8,7 @@ exports.successHandler = (res, data, statusCode = 200) => {
         secure: true, // Utilisez 'secure' si vous êtes en production et utilisez HTTPS
         sameSite: 'None'
       });
-    res.status(statusCode).json({ success: true, data, cookieData:res.cookies });
+    res.status(statusCode).json({ success: true, data, cookieData:res.cookies[COOKIE_NAME] });
 }
 
 exports.errorHandler = (res, message, statusCode = 400, data = null) => {
