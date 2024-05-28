@@ -4,3 +4,4 @@ package-lock.json
 package-lock.json
 src/uploads/*
 functions
+*.bat
