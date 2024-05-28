@@ -114,6 +114,12 @@ server.get("/checkVersion", (req, res) => {
   res.send(new Date().toLocaleDateString());
 });
 
+server.get("/timeZone", (req, res) => {
+  const date = new Date();
+  const timezone = date.getTimezoneOffset() / 60;
+  res.status(200).json({ timezone: `UTC${timezone >= 0 ? '-' : '+'}${Math.abs(timezone)}` });
+});
+
 // Gestionnaire d'erreurs global
 server.use((err, req, res, next) => {
   if (err) {
