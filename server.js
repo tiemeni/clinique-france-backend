@@ -74,6 +74,7 @@ server.use(
       }
       return callback(null, true);
     },
+
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     preflightContinue: true,
     allowedHeaders: ['Authorization', 'Content-Type', "Access-Control-Allow-Origin"],
