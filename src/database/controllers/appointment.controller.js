@@ -81,6 +81,7 @@ const makeAppointment = async (req, res) => {
   try {
     const isExist = await appointementService.findOneByQuery({
       startTime: data.startTime,
+      date: data.date,
       practitioner: data.practitioner,
     });
     console.log(isExist)
