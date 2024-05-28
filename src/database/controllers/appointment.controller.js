@@ -246,8 +246,8 @@ const getAppointments = async (req, res) => {
         resourceId: practitioner?._id,
         status: appointment.status,
         created_at: appointment.created_at,
-        start: startDate,
-          end: endDate,
+        start: startDate.toISOString(),
+          end: endDate.toISOString(),
         
        // start: moment(`${appointment.date}T${appointment.startTime}`).utc().toISOString(),
     //    end: moment(`${appointment.date}T${appointment.endTime}`).utc().toISOString(),
