@@ -1,5 +1,5 @@
 const cron = require("node-cron");
-const moment = require("moment")
+const moment = require('moment-timezone')
 const axios = require("axios");
 const handler = require("../../commons/response.handler");
 const { httpStatus } = require("../../commons/constants");
@@ -246,8 +246,8 @@ const getAppointments = async (req, res) => {
         resourceId: practitioner?._id,
         status: appointment.status,
         created_at: appointment.created_at,
-        start: startDate.toISOString(),
-          end: endDate.toISOString(),
+        start: moment(startDate).tz(timeZone).format(),
+          end: moment(endDate).tz(timeZone).format(),
         
        // start: moment(`${appointment.date}T${appointment.startTime}`).utc().toISOString(),
     //    end: moment(`${appointment.date}T${appointment.endTime}`).utc().toISOString(),
