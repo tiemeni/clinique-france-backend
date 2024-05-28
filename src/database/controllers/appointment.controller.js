@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const moment = require("moment")
 const axios = require("axios");
 const handler = require("../../commons/response.handler");
 const { httpStatus } = require("../../commons/constants");
@@ -245,8 +246,11 @@ const getAppointments = async (req, res) => {
         resourceId: practitioner?._id,
         status: appointment.status,
         created_at: appointment.created_at,
-        start: startDate,
-        end: endDate,
+      //  start: startDate,
+        //  end: endDate,
+        
+        start: moment(`${appointment.date}T${appointment.startTime}`).utc().toISOString(),
+        end: moment(`${appointment.date}T${appointment.endTime}`).utc().toISOString(),
         textColor: getContrastColor(appointment.motif.couleur),
         duree: appointment.duration,
         dateLong: appointment.date_long ?? "",
