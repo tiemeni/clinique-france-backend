@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const moment = require('moment-timezone')
 const axios = require("axios");
 const handler = require("../../commons/response.handler");
 const { httpStatus } = require("../../commons/constants");
@@ -81,6 +82,7 @@ const makeAppointment = async (req, res) => {
   try {
     const isExist = await appointementService.findOneByQuery({
       startTime: data.startTime,
+      date: data.date,
       practitioner: data.practitioner,
     });
     console.log(isExist)
@@ -244,8 +246,13 @@ const getAppointments = async (req, res) => {
         resourceId: practitioner?._id,
         status: appointment.status,
         created_at: appointment.created_at,
+        // start: moment(startDate).tz(timeZone).format(),
+        //   end: moment(endDate).tz(timeZone).format(),
         start: startDate,
-        end: endDate,
+        end:endDate,
+        
+       // start: moment(`${appointment.date}T${appointment.startTime}`).utc().toISOString(),
+    //    end: moment(`${appointment.date}T${appointment.endTime}`).utc().toISOString(),
         textColor: getContrastColor(appointment.motif.couleur),
         duree: appointment.duration,
         dateLong: appointment.date_long ?? "",
