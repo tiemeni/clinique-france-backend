@@ -1,6 +1,7 @@
 const patientService = require("../../services/patient.service");
 const handler = require("../../commons/response.handler");
 const { httpStatus } = require("../../commons/constants");
+const auth = require("../../commons/auth");
 
 const createPatient = async (req, res) => {
   const data = req.body;
@@ -75,8 +76,10 @@ const getPatientByName = async (req, res) => {
 
 const updatePatient = async (req, res) => {
   try {
+    let extractedPw = req.body.password;
+    if (extractedPw) extractedPw = await auth.encryptPassword(extractedPw);
     const result = await patientService.updatePatient(req.params.patientId, {
-      $set: { ...req.body },
+      $set: { ...req.body, password:extractedPw },
     });
     return handler.successHandler(res, result, httpStatus.CREATED);
   } catch (err) {
